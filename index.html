@@ -9,6 +9,126 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+
+<style>
+  #topMarquee {
+    width: 100%;
+    background: #d4af37; /* old golden background */
+    color: white;
+    font-weight: bold;
+    font-size: 14px;   /* smaller text */
+    padding: 4px 0;    /* reduced height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  #topMarquee span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 12s linear infinite;
+  }
+
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* Push site content below marquee */
+  body {
+    margin-top: 30px; /* smaller margin to match shorter banner */
+  }
+
+  /* Hidden state */
+  #topMarquee.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+</style>
+
+
+
+
+<!-- ===== CONTACT FORM POPUP + GOLDEN CALL BUTTON START ===== -->
+<style>
+  /* Floating Call Button */
+  #contactLogo {
+    position: fixed;
+    right: 10px; /* slight padding from bezel */
+    top: 50%; /* vertically centered */
+    transform: translateY(-50%);
+    width: 55px;
+    height: 55px;
+    background-color: #d4af37; /* old golden color */
+    border-radius: 50%; /* makes it a circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  #contactLogo img {
+    width: 28px; /* smaller icon */
+    height: 28px;
+  }
+
+  #contactLogo:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+  }
+
+  /* Modal Background */
+  #contactModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+  }
+
+  /* Modal Content */
+  #contactModal .modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Close Button */
+  #contactModal .close {
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+  }
+
+  /* Iframe inside modal */
+  #contactModal iframe {
+    flex-grow: 1;
+    border: none;
+    border-radius: 0 0 10px 10px;
+  }
+</style>
+
     <style>
         /* CSS remains unchanged from original */
         :root {
@@ -1010,6 +1130,21 @@
         </div>
     </section>
 
+<div id="contactLogo" onclick="openModal()" title="Contact Form">
+  <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png" alt="Call Icon">
+</div>
+
+<!-- Modal HTML -->
+<div id="contactModal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeJcVZ8eoeYd0alejhanmhJoOC8LRW-EjE-WgnmDkiFKHCe-g/viewform?embedded=true"
+            width="100%" height="100%">Loading…</iframe>
+  </div>
+</div>
+
+
+
     <!-- Services -->
     <section class="services" id="services">
         <div class="container">
@@ -1261,6 +1396,11 @@
 
                 <button id="calculate-sip" class="btn">Calculate</button>
             </div>
+
+<div id="topMarquee">
+  <span>⚠️ Investments in SIPs and mutual funds involve market risks. Past performance is not indicative of future results. Start your journey with us today and grow your wealth wisely! ⚠️</span>
+</div>
+
 
             <script>
                 // Number to words function for Indian number system (supports up to crores)
@@ -1534,6 +1674,23 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </section>
 
     <!-- CTA -->
@@ -1952,6 +2109,50 @@
 
 
     </script>
-</body>
+
+<script>
+  let popupShown = false;
+
+  function openModal() {
+    document.getElementById("contactModal").style.display = "block";
+  }
+  function closeModal() {
+    document.getElementById("contactModal").style.display = "none";
+  }
+
+  // Trigger popup at 15% scroll
+  window.addEventListener("scroll", function() {
+    if (popupShown) return;
+
+    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    let docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let scrollPercent = (scrollTop / docHeight) * 100;
+
+    if (scrollPercent >= 15) {
+      openModal();
+      popupShown = true;
+    }
+  });
+
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    let modal = document.getElementById("contactModal");
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+
+<script>
+  // Hide marquee after 30 seconds
+  setTimeout(() => {
+    document.getElementById("topMarquee").classList.add("hidden");
+    // Reset body margin after banner hides
+    document.body.style.marginTop = "0px";
+  }, 30000); // 30 seconds
+</script>
+
+
+	</body>
 
 </html>
